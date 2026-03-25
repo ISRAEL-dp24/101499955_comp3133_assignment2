@@ -1,0 +1,196 @@
+<div class="page-wrapper">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">👥</span>
+      Employee Management
+    </div>
+    <button class="btn-back" (click)="cancel()">← Back to List</button>
+  </nav>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="form-card">
+      <div class="form-card-header">
+        <h1>Add New Employee</h1>
+        <p>Fill in the details below to add a new employee to the system</p>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+        <!-- Photo Upload -->
+        <div class="photo-section">
+          <div class="photo-preview-wrapper">
+            <div class="photo-preview" *ngIf="photoPreview">
+              <img [src]="photoPreview" alt="Employee photo preview" />
+              <button type="button" class="remove-photo" (click)="removePhoto()">✕</button>
+            </div>
+            <div class="photo-placeholder" *ngIf="!photoPreview">
+              <span class="photo-icon">📷</span>
+              <span>No photo selected</span>
+            </div>
+          </div>
+          <div class="photo-upload-controls">
+            <label class="btn-upload" for="photoInput">Choose Photo</label>
+            <input
+              id="photoInput"
+              type="file"
+              accept="image/*"
+              style="display:none"
+              (change)="onPhotoSelected($event)"
+            />
+            <p class="photo-hint">JPG, PNG, GIF or WEBP · Max 2MB</p>
+            <p class="photo-error" *ngIf="photoError">{{ photoError }}</p>
+          </div>
+        </div>
+
+        <!-- Two-column grid -->
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>First Name <span class="required">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="first_name"
+              placeholder="e.g. John"
+              [class.is-invalid]="f['first_name'].invalid && f['first_name'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="f['first_name'].errors?.['required'] && f['first_name'].touched">
+              First name is required
+            </div>
+            <div class="invalid-feedback" *ngIf="f['first_name'].errors?.['minlength'] && f['first_name'].touched">
+              Must be at least 2 characters
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="last_name"
+              placeholder="e.g. Doe"
+              [class.is-invalid]="f['last_name'].invalid && f['last_name'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="f['last_name'].errors?.['required'] && f['last_name'].touched">
+              Last name is required
+            </div>
+            <div class="invalid-feedback" *ngIf="f['last_name'].errors?.['minlength'] && f['last_name'].touched">
+              Must be at least 2 characters
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address <span class="required">*</span></label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="e.g. john.doe@company.com"
+              [class.is-invalid]="f['email'].invalid && f['email'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="f['email'].errors?.['required'] && f['email'].touched">
+              Email is required
+            </div>
+            <div class="invalid-feedback" *ngIf="f['email'].errors?.['email'] && f['email'].touched">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Gender <span class="required">*</span></label>
+            <select
+              class="form-control"
+              formControlName="gender"
+              [class.is-invalid]="f['gender'].invalid && f['gender'].touched"
+            >
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="f['gender'].errors?.['required'] && f['gender'].touched">
+              Please select a gender
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Department <span class="required">*</span></label>
+            <select
+              class="form-control"
+              formControlName="department"
+              [class.is-invalid]="f['department'].invalid && f['department'].touched"
+            >
+              <option value="">Select department</option>
+              <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="f['department'].errors?.['required'] && f['department'].touched">
+              Please select a department
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Designation <span class="required">*</span></label>
+            <select
+              class="form-control"
+              formControlName="designation"
+              [class.is-invalid]="f['designation'].invalid && f['designation'].touched"
+            >
+              <option value="">Select designation</option>
+              <option *ngFor="let d of designations" [value]="d">{{ d }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="f['designation'].errors?.['required'] && f['designation'].touched">
+              Please select a designation
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Salary (CAD) <span class="required">*</span></label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="salary"
+              placeholder="e.g. 75000"
+              [class.is-invalid]="f['salary'].invalid && f['salary'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="f['salary'].errors?.['required'] && f['salary'].touched">
+              Salary is required
+            </div>
+            <div class="invalid-feedback" *ngIf="f['salary'].errors?.['min'] && f['salary'].touched">
+              Salary must be at least $1,000
+            </div>
+            <div class="invalid-feedback" *ngIf="f['salary'].errors?.['max'] && f['salary'].touched">
+              Salary cannot exceed $999,999
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Date of Joining <span class="required">*</span></label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="date_of_joining"
+              [class.is-invalid]="f['date_of_joining'].invalid && f['date_of_joining'].touched"
+            />
+            <div class="invalid-feedback" *ngIf="f['date_of_joining'].errors?.['required'] && f['date_of_joining'].touched">
+              Date of joining is required
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="loading">
+            {{ loading ? 'Adding Employee...' : 'Add Employee' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
