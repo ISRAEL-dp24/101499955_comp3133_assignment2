@@ -1,0 +1,59 @@
+<div class="page-wrapper">
+  <nav class="navbar">
+    <div class="navbar-brand">👥 Employee Management</div>
+    <button class="btn-back" (click)="back()">← Back to List</button>
+  </nav>
+
+  <div class="content">
+    <div class="card" *ngIf="loading">
+      <p class="text-center">Loading...</p>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="card" *ngIf="!loading && employee">
+      <div class="card-header">
+        <div class="avatar-lg" *ngIf="!employee.employee_photo">
+          {{ employee.first_name[0] }}{{ employee.last_name[0] }}
+        </div>
+        <img *ngIf="employee.employee_photo" [src]="employee.employee_photo" class="avatar-photo" alt="Employee photo" />
+        <div>
+          <h2>{{ employee.first_name }} {{ employee.last_name }}</h2>
+          <p class="subtitle">{{ employee.designation }} · {{ employee.department }}</p>
+        </div>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="label">Email</span>
+          <span class="value">{{ employee.email }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Gender</span>
+          <span class="value">{{ employee.gender }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Salary</span>
+          <span class="value">${{ employee.salary | number }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Date of Joining</span>
+          <span class="value">{{ employee.date_of_joining | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Department</span>
+          <span class="value">{{ employee.department }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Designation</span>
+          <span class="value">{{ employee.designation }}</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-cancel" (click)="back()">Back</button>
+        <button class="btn-edit" (click)="edit()">Edit Employee</button>
+      </div>
+    </div>
+  </div>
+</div>

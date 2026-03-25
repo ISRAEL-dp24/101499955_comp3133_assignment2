@@ -4,6 +4,8 @@ import { SignupComponent } from './components/signup/signup';
 import { EmployeeListComponent } from './components/employee-list/employee-list';
 import { AddEmployeeComponent } from './components/add-employee/add-employee';
 import { AuthGuard } from './guards/auth-guard';
+import { ViewEmployeeComponent } from './components/view-employee/view-employee';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -11,6 +13,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'employees', component: EmployeeListComponent, canActivate: [AuthGuard] },
   { path: 'employees/add', component: AddEmployeeComponent, canActivate: [AuthGuard] },
+  { path: 'employees/:id/view', component: ViewEmployeeComponent, canActivate: [AuthGuard] },
 ];
 
 export default routes;
