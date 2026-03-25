@@ -1,11 +1,25 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
+import { InMemoryCache } from '@apollo/client/core';
+import { Apollo, APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimations(),
+    Apollo,
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => ({
+        cache: new InMemoryCache(),
+        link: httpLink.create({ uri: 'http://localhost:4000/graphql' }),
+      }),
+      deps: [HttpLink],
+    },
+  ],
 };
