@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GraphqlService } from '../../services/graphql';
 import { AuthService } from '../../services/auth';
+import { SalaryPipe } from '../../pipes/salary.pipe';
+import { HighlightDirective } from '../../directives/highlight.directive';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SalaryPipe, HighlightDirective],
   templateUrl: './employee-list.html',
   styleUrl: './employee-list.css'
 })

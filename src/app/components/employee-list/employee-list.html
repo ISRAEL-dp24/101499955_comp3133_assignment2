@@ -61,7 +61,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let emp of filteredEmployees">
+          <tr *ngFor="let emp of filteredEmployees" appHighlight>
             <td>
               <div class="employee-name">
                 <div class="avatar">{{ emp.first_name[0] }}{{ emp.last_name[0] }}</div>
@@ -71,7 +71,7 @@
             <td>{{ emp.email }}</td>
             <td><span class="badge-designation">{{ emp.designation }}</span></td>
             <td>{{ emp.department }}</td>
-            <td>${{ emp.salary | number }}</td>
+            <td>${{ emp.salary | salary }}</td>
             <td>
               <div class="action-buttons">
                 <button class="btn-view"   (click)="viewEmployee(emp._id)">View</button>

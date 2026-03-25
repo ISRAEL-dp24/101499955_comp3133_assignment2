@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraphqlService } from '../../services/graphql';
+import { SalaryPipe } from '../../pipes/salary.pipe';
+
 
 @Component({
   selector: 'app-view-employee',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SalaryPipe],
   templateUrl: './view-employee.html',
   styleUrl: './view-employee.css'
 })
