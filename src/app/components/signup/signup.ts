@@ -8,8 +8,8 @@ import { GraphqlService } from '../../services/graphql';
   selector: 'app-signup',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  templateUrl: './signup.html',
+  styleUrl: './signup.css'
 })
 export class SignupComponent {
   signupForm: FormGroup;
