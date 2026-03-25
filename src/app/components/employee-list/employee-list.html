@@ -1,0 +1,74 @@
+<div class="page-wrapper">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">👥</span>
+      Employee Management
+    </div>
+    <div class="navbar-actions">
+      <button class="btn-add" (click)="addEmployee()">+ Add Employee</button>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="page-header">
+      <h1>All Employees</h1>
+      <p>{{ filteredEmployees.length }} employee(s) found</p>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alert alert-success" *ngIf="deleteMessage">{{ deleteMessage }}</div>
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <!-- Loading -->
+    <div class="loading-spinner" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Loading employees...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && filteredEmployees.length === 0">
+      <p>🗂️ No employees found.</p>
+      <button class="btn-add" (click)="addEmployee()">Add your first employee</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper" *ngIf="!loading && filteredEmployees.length > 0">
+      <table class="employee-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Designation</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let emp of filteredEmployees">
+            <td>
+              <div class="employee-name">
+                <div class="avatar">{{ emp.first_name[0] }}{{ emp.last_name[0] }}</div>
+                {{ emp.first_name }} {{ emp.last_name }}
+              </div>
+            </td>
+            <td>{{ emp.email }}</td>
+            <td><span class="badge-designation">{{ emp.designation }}</span></td>
+            <td>{{ emp.department }}</td>
+            <td>${{ emp.salary | number }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-view" (click)="viewEmployee(emp._id)">View</button>
+                <button class="btn-edit" (click)="editEmployee(emp._id)">Edit</button>
+                <button class="btn-delete" (click)="deleteEmployee(emp._id, emp.first_name + ' ' + emp.last_name)">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
