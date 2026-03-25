@@ -5,6 +5,7 @@ import { EmployeeListComponent } from './components/employee-list/employee-list'
 import { AddEmployeeComponent } from './components/add-employee/add-employee';
 import { AuthGuard } from './guards/auth-guard';
 import { ViewEmployeeComponent } from './components/view-employee/view-employee';
+import { EditEmployeeComponent } from './components/edit-employee/edit-employee';
 
 
 export const routes: Routes = [
@@ -14,6 +15,8 @@ export const routes: Routes = [
   { path: 'employees', component: EmployeeListComponent, canActivate: [AuthGuard] },
   { path: 'employees/add', component: AddEmployeeComponent, canActivate: [AuthGuard] },
   { path: 'employees/:id/view', component: ViewEmployeeComponent, canActivate: [AuthGuard] },
+  { path: 'employees/:id/edit', component: EditEmployeeComponent, canActivate: [AuthGuard] },
+
 ];
 
 export default routes;
