@@ -6,6 +6,7 @@ import { GraphqlService } from '../../services/graphql';
 import { AuthService } from '../../services/auth';
 import { SalaryPipe } from '../../pipes/salary.pipe';
 import { HighlightDirective } from '../../directives/highlight.directive';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-employee-list',
@@ -28,7 +29,8 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private graphqlService: GraphqlService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() { this.loadEmployees(); }
@@ -40,10 +42,12 @@ export class EmployeeListComponent implements OnInit {
         this.employees = result.data?.getAllEmployees || [];
         this.filteredEmployees = [...this.employees];
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.message || 'Failed to load employees.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -61,10 +65,12 @@ export class EmployeeListComponent implements OnInit {
       next: (result: any) => {
         this.filteredEmployees = result.data?.searchEmployeeByDesignationOrDepartment || [];
         this.isSearching = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.message || 'Search failed.';
         this.isSearching = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -75,8 +81,17 @@ export class EmployeeListComponent implements OnInit {
     this.filteredEmployees = [...this.employees];
   }
 
-  viewEmployee(eid: string) { this.router.navigate(['/employees', eid, 'view']); }
-  editEmployee(eid: string) { this.router.navigate(['/employees', eid, 'edit']); }
+  viewEmployee(emp: any) {
+    this.router.navigate(['/employees', emp._id, 'view'], {
+      state: { employee: emp }
+    });
+  }
+
+  editEmployee(emp: any) {
+    this.router.navigate(['/employees', emp._id, 'edit'], {
+      state: { employee: emp }
+    });
+  }
   addEmployee() { this.router.navigate(['/employees/add']); }
   logout() { this.authService.logout(); }
 

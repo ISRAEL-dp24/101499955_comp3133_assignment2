@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraphqlService } from '../../services/graphql';
 import { SalaryPipe } from '../../pipes/salary.pipe';
-
 
 @Component({
   selector: 'app-view-employee',
@@ -20,30 +19,38 @@ export class ViewEmployeeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private graphqlService: GraphqlService
+    private graphqlService: GraphqlService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     const eid = this.route.snapshot.paramMap.get('id');
     if (!eid) { this.router.navigate(['/employees']); return; }
 
-    this.graphqlService.searchEmployeeById(eid).subscribe({
-      next: (result: any) => {
-        this.employee = result.data?.searchEmployeeById;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.message || 'Failed to load employee.';
-        this.loading = false;
-      }
-    });
+    const navState = this.router.getCurrentNavigation()?.extras?.state ||
+                    history.state;
+    const stateEmployee = navState?.['employee'];
+
+    if (stateEmployee && stateEmployee._id === eid) {
+      this.employee = stateEmployee;
+      this.loading = false;
+      this.cdr.detectChanges();
+    } else {
+      this.graphqlService.searchEmployeeById(eid).subscribe({
+        next: (result: any) => {
+          this.employee = result.data?.searchEmployeeById;
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.errorMessage = err.message || 'Failed to load employee.';
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
-  edit() {
-    this.router.navigate(['/employees', this.employee._id, 'edit']);
-  }
-
-  back() {
-    this.router.navigate(['/employees']);
-  }
+  edit() { this.router.navigate(['/employees', this.employee._id, 'edit']); }
+  back() { this.router.navigate(['/employees']); }
 }

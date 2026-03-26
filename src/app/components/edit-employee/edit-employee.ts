@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GraphqlService } from '../../services/graphql';
+
 
 @Component({
   selector: 'app-edit-employee',
@@ -28,7 +29,9 @@ export class EditEmployeeComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private graphqlService: GraphqlService
+    private graphqlService: GraphqlService,
+    private cdr: ChangeDetectorRef
+
   ) {
     this.employeeForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -49,39 +52,53 @@ export class EditEmployeeComponent implements OnInit {
     if (!eid) { this.router.navigate(['/employees']); return; }
     this.employeeId = eid;
 
-    this.graphqlService.searchEmployeeById(eid).subscribe({
-      next: (result: any) => {
-        const emp = result.data?.searchEmployeeById;
-        if (!emp) { this.router.navigate(['/employees']); return; }
+    //trying to get employee from router state first (avoids Apollo dedup issue)
+    const navState = this.router.getCurrentNavigation()?.extras?.state ||
+                    history.state;
+    const stateEmployee = navState?.['employee'];
 
-        // Format date to yyyy-MM-dd for the date input
-        const dateVal = emp.date_of_joining
-          ? new Date(emp.date_of_joining).toISOString().split('T')[0]
-          : '';
-
-        this.employeeForm.patchValue({
-          first_name: emp.first_name,
-          last_name:  emp.last_name,
-          email:      emp.email,
-          gender:     emp.gender,
-          designation:emp.designation,
-          salary:     emp.salary,
-          date_of_joining: dateVal,
-          department: emp.department,
-        });
-
-        if (emp.employee_photo) {
-          this.photoPreview = emp.employee_photo;
-          this.photoBase64  = emp.employee_photo;
+    if (stateEmployee && stateEmployee._id === eid) {
+      this.populateForm(stateEmployee);
+    } else {
+      // Fallback: fetch from API if navigated directly
+      this.graphqlService.searchEmployeeById(eid).subscribe({
+        next: (result: any) => {
+          const emp = result.data?.searchEmployeeById;
+          if (!emp) { this.router.navigate(['/employees']); return; }
+          this.populateForm(emp);
+        },
+        error: (err) => {
+          this.errorMessage = err.message || 'Failed to load employee.';
+          this.loading = false;
+          this.cdr.detectChanges();
         }
+      });
+    }
+  }
 
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = err.message || 'Failed to load employee.';
-        this.loading = false;
-      }
+  private populateForm(emp: any) {
+    const dateVal = emp.date_of_joining
+      ? new Date(Number(emp.date_of_joining) || emp.date_of_joining).toISOString().split('T')[0]
+      : '';
+
+    this.employeeForm.patchValue({
+      first_name: emp.first_name,
+      last_name: emp.last_name,
+      email: emp.email,
+      gender: emp.gender,
+      designation: emp.designation,
+      salary: emp.salary,
+      date_of_joining: dateVal,
+      department: emp.department,
     });
+
+    if (emp.employee_photo) {
+      this.photoPreview = emp.employee_photo;
+      this.photoBase64 = emp.employee_photo;
+    }
+
+    this.loading = false;
+    this.cdr.detectChanges();
   }
 
   onPhotoSelected(event: Event) {

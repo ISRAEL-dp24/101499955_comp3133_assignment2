@@ -12,7 +12,7 @@ import { GraphqlService } from '../../services/graphql';
 @Component({
   selector: 'app-add-employee',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-employee.html',
   styleUrl: './add-employee.css',
 })

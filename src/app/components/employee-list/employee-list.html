@@ -64,8 +64,9 @@
           <tr *ngFor="let emp of filteredEmployees" appHighlight>
             <td>
               <div class="employee-name">
-                <div class="avatar">{{ emp.first_name[0] }}{{ emp.last_name[0] }}</div>
-                {{ emp.first_name }} {{ emp.last_name }}
+              <img *ngIf="emp.employee_photo" [src]="emp.employee_photo" class="avatar-img" alt="photo" />
+              <div class="avatar" *ngIf="!emp.employee_photo">{{ emp.first_name[0] }}{{ emp.last_name[0] }}</div>
+              {{ emp.first_name }} {{ emp.last_name }}
               </div>
             </td>
             <td>{{ emp.email }}</td>
@@ -74,8 +75,8 @@
             <td>${{ emp.salary | salary }}</td>
             <td>
               <div class="action-buttons">
-                <button class="btn-view"   (click)="viewEmployee(emp._id)">View</button>
-                <button class="btn-edit"   (click)="editEmployee(emp._id)">Edit</button>
+                <button class="btn-view" (click)="viewEmployee(emp)">View</button>
+                <button class="btn-edit" (click)="editEmployee(emp)">Edit</button>
                 <button class="btn-delete" (click)="deleteEmployee(emp._id, emp.first_name + ' ' + emp.last_name)">Delete</button>
               </div>
             </td>

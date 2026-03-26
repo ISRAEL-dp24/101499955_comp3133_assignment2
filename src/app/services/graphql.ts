@@ -86,7 +86,7 @@ const DELETE_EMPLOYEE = gql`
 const SEARCH_BY_DESIGNATION_OR_DEPARTMENT = gql`
   query SearchEmployeeByDesignationOrDepartment($designation: String, $department: String) {
     searchEmployeeByDesignationOrDepartment(designation: $designation, department: $department) {
-      _id first_name last_name email designation department salary
+      _id first_name last_name email designation department salary employee_photo
     }
   }
 `;

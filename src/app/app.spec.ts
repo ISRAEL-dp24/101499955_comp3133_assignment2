@@ -21,3 +21,4 @@ describe('App', () => {
     expect(compiled.querySelector('h1')?.textContent).toContain('Hello, 101499955_comp3133_assignment2');
   });
 });
+

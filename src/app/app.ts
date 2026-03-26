@@ -10,3 +10,4 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('101499955_comp3133_assignment2');
 }
+
