@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => ({
         cache: new InMemoryCache(),
-        link: httpLink.create({ uri: 'http://localhost:4000/graphql' }),
+        link: httpLink.create({ uri: 'http://comp-3133-101499955-assignment1.vercel.app/graphql' }),
       }),
       deps: [HttpLink],
     },
