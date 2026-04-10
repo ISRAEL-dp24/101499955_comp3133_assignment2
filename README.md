@@ -1,59 +1,136 @@
-# 101499955Comp3133Assignment2
+# COMP3133 Assignment 2 by
+# Israel Osunkoya
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+**Course:** COMP 3133 – Full Stack Development II  
+**Student ID:** 101499955  
+**George Brown College**
 
-## Development server
+---
 
-To start a local development server, run:
+## Overview
 
+A full-stack Employee Management System built with **Angular 21** (frontend) and **Node.js + GraphQL** (backend). Users can sign up, log in, and perform full CRUD operations on employee records, including profile photo upload and search by department or designation.
+
+---
+
+## Tech Stack
+
+| Layer     | Technology                                                     |
+|-----------|----------------------------------------------------------------|
+| Frontend  | Angular 21, Apollo Angular, Bootstrap 5, Angular Material      |
+| Backend   | Node.js, Express, Apollo Server, GraphQL                       |
+| Database  | MongoDB Atlas                                                  |
+| Auth      | JWT (JSON Web Tokens)                                          |
+| Hosting   | Frontend: Vercel · Backend: Render                             |
+
+---
+
+## Features
+
+- **Authentication** – Signup & Login with form validation; JWT session stored via `AuthService`; `AuthGuard` protects all employee routes
+- **Employee List** – Tabular view of all employees with avatar/photo, salary formatted via `SalaryPipe`, row hover via `HighlightDirective`
+- **Add Employee** – Reactive form with full validation; profile photo upload (JPG/PNG/GIF/WEBP, max 2 MB, stored as base64)
+- **View Employee** – Detailed employee card
+- **Edit Employee** – Pre-populated form with photo update support
+- **Delete Employee** – Confirmation dialog + instant list refresh
+- **Search** – Filter employees by department and/or designation via dedicated GraphQL query
+- **Logout** – Clears session and redirects to login
+
+---
+
+## Angular Concepts Used
+
+| Concept              | Where                                          |
+|----------------------|------------------------------------------------|
+| Components           | Login, Signup, EmployeeList, Add, View, Edit   |
+| Reactive Forms       | All form screens with validators               |
+| Services             | `AuthService`, `GraphqlService`                |
+| Dependency Injection | All services injected via constructor          |
+| Router & Guards      | `app.routes.ts`, `AuthGuard`                   |
+| Pipes                | `SalaryPipe` (formats salary as CAD)           |
+| Directives           | `HighlightDirective` (row hover highlight)     |
+| Apollo Angular       | GraphQL queries & mutations                    |
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── login/
+│   │   ├── signup/
+│   │   ├── employee-list/
+│   │   ├── add-employee/
+│   │   ├── view-employee/
+│   │   └── edit-employee/
+│   ├── services/
+│   │   ├── auth.ts
+│   │   └── graphql.ts
+│   ├── guards/
+│   │   └── auth-guard.ts
+│   ├── pipes/
+│   │   └── salary.pipe.ts
+│   ├── directives/
+│   │   └── highlight.directive.ts
+│   ├── app.routes.ts
+│   └── app.config.ts
+└── environments/
+    ├── environment.ts        (dev  → localhost:4000)
+    └── environment.prod.ts   (prod → Render URL)
+```
+
+---
+
+## Getting Started (Local)
+
+### Prerequisites
+- Node.js 18+
+- Angular CLI: `npm install -g @angular/cli`
+
+### 1. Start the Backend
 ```bash
+cd backend/
+npm install
+npm start
+# GraphQL running at http://localhost:4000/graphql
+```
+
+### 2. Start the Frontend
+```bash
+cd frontend/
+npm install
 ng serve
+# App running at http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Deployment
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Service  | URL                                         |
+|----------|---------------------------------------------|
+| Backend  | https://YOUR_BACKEND_URL.onrender.com       |
+| Frontend | https://YOUR_FRONTEND_URL.vercel.app        |
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## GraphQL API Summary
 
-```bash
-ng generate --help
-```
+| Operation                                      | Type     |
+|------------------------------------------------|----------|
+| `login(username, password)`                    | Query    |
+| `signup(username, email, password)`            | Mutation |
+| `getAllEmployees`                               | Query    |
+| `searchEmployeeById(eid)`                      | Query    |
+| `searchEmployeeByDesignationOrDepartment(...)`| Query    |
+| `addEmployee(...)`                             | Mutation |
+| `updateEmployee(eid, ...)`                     | Mutation |
+| `deleteEmployee(eid)`                          | Mutation |
 
-## Building
+---
 
-To build the project run:
+## License
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Academic project – George Brown College, 2026.

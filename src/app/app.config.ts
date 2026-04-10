@@ -1,11 +1,12 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { InMemoryCache } from '@apollo/client/core';
 import { Apollo, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,13 +18,9 @@ export const appConfig: ApplicationConfig = {
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => ({
         cache: new InMemoryCache(),
-        link: httpLink.create({ uri: 'https://comp-3133-101499955-assignment1.vercel.app/graphql' }),
+        link: httpLink.create({ uri: environment.graphqlUri }),
       }),
       deps: [HttpLink],
     },
   ],
 };
-
-
-
-
