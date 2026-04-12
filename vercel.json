@@ -1,0 +1,5 @@
+{
+  "buildCommand": "ng build --configuration production",
+  "outputDirectory": "dist/101499955_comp3133_assignment2/browser",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
