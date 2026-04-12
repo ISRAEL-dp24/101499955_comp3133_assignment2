@@ -111,26 +111,7 @@ ng serve
 
 | Service  | URL                                         |
 |----------|---------------------------------------------|
-| Backend  | https://YOUR_BACKEND_URL.onrender.com       |
-| Frontend | https://YOUR_FRONTEND_URL.vercel.app        |
+| Backend  | https://comp3133-101499955-backend.onrender.com       |
+| Frontend | https://101499955-comp3133-assignment2.vercel.app/        |
 
 ---
-
-## GraphQL API Summary
-
-| Operation                                      | Type     |
-|------------------------------------------------|----------|
-| `login(username, password)`                    | Query    |
-| `signup(username, email, password)`            | Mutation |
-| `getAllEmployees`                               | Query    |
-| `searchEmployeeById(eid)`                      | Query    |
-| `searchEmployeeByDesignationOrDepartment(...)`| Query    |
-| `addEmployee(...)`                             | Mutation |
-| `updateEmployee(eid, ...)`                     | Mutation |
-| `deleteEmployee(eid)`                          | Mutation |
-
----
-
-## License
-
-Academic project – George Brown College, 2026.
